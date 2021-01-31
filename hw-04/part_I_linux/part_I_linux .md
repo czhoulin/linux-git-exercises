@@ -21,7 +21,7 @@ cut nginx_logs_examples.log -d ' ' -f 1 | sort -nr | uniq -c  | awk '{print $2" 
 1. Cortamos [cut] la parte que nos interesa de cada línea del archivo [nginx\_logs\_examples.log], la columna de IPs, que es la primera [-f 1]. Especificamos que el espacio en blanco es el delimitador [-d ' '].
 2. Ordenamos [sort] los datos seleccionados por orden numérico [-n] descendiente [-r].
 3. Evitamos mostrar los valores repetidos de IP [uniq] y los contamos [-c], agregando el número de ocurrencias de cada IP como prefijo de cada línea 
-4. Ahora tenemos solo dos columnas: la primera, el número de ocurrencias; la segunda, la dirección IP. Formateamos la salida según como se espera en el ejercicio [awk '{print $2" -> "$1}]. Con awk podemos referencias toda la línea; cada columna se acaba guardando por orden en variables (por defecto detecta los espacios en blanco para hacer las separaciones). La variable $0 es toda la línea.
+4. Ahora tenemos solo dos columnas: la primera, el número de ocurrencias; la segunda, la dirección IP. Formateamos la salida según como se espera en el ejercicio [awk '{print $2" -> "$1}]. Con awk podemos referenciar toda la línea; cada columna se acaba guardando por orden en variables (por defecto detecta los espacios en blanco para hacer las separaciones; la variable $0 es toda la línea). La variable $1 guarda el número de ocurrencias y $2 la dirección IP.
 
     ![image](./images/3.png)
 
@@ -29,22 +29,25 @@ cut nginx_logs_examples.log -d ' ' -f 1 | sort -nr | uniq -c  | awk '{print $2" 
 
 Script
 ~~~
-DIRECTORY="/backup/<student_name>/<year>/<month>/<day>"
-DIA=`date +%d`
-MES=`date +%m`
-YEAR=date +%Y
-MONTH=date +%m`
+YEAR=`date +%Y`
+MONTH=`date +%m`
 DAY=`date +%d`
-DAYNAME=date +%A
-FILE=nginx_log_requests_$YEAR$MONTH$DAY.log
+WEEKDAY=`date +%u`
+FILENAME=nginx_log_requests_$YEAR$MONTH$DAY
+DIRECTORY=/backup/carolina/$YEAR/$MONTH/$DAY
 
-[ ! -d "$DIRECTORY" ] && mkdir -p /backup/carolina/"$YEAR"/$MONTH"/"$DAY"
+[ ! -d "$DIRECTORY" ] && sudo mkdir -p "$DIRECTORY"
 
-[ -d "$DIRECTORY" ] && cp nginx_requests_total.txt /backup/carolina/"$YEAR"/$MONTH"/"$DAY"/"$FILE"
+[ -d "$DIRECTORY" ] && sudo cp nginx_requests_total.txt "$DIRECTORY"/"$FILENAME".log
 
-//TODO While to get files from the whole week and zip them
+[ "$WEEKDAY" -eq 7 ] && find /backup/carolina -type f -iname "*.log" -mtime -7 -print0 | sudo tar -czvf "$FILENAME".tar.gz -C backup/carolina/*/*/ --null -T - | sudo mv "$FILENAME".tar.gz "$DIRECTORY"
 
 ~~~
+- Extraemos en variables para mayor legibilidad.
+- Comprobamos si existe el directorio del día-mes-año correspondiente. Si no existe lo creamos.
+- Si existe, copiamos _nginx\_requests\_total.txt_ en dicho directorio con el formato de nombre especificado en el enunciado.
+- Si el día de ejecución es un domingo, buscamos todos los archivos modificados los últimos 7 días y los comprimimos en un archivo .tar.gz. Movemos el archivo creado al directorio.
+TODO: crear el archivo comprimido sin la estructura de directorios --> plano.
 
 ## Ejercicio 3
 
