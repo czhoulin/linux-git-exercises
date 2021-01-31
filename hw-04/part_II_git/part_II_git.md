@@ -88,6 +88,8 @@ chmod +x script.sh
 git status
 ~~~
 - No detectaremos cambios porque inicialmente hemos especificado que se ignoren los archivos .sh
+- Si quisiéramos seguir ignorando los archivos .sh con excepción de este script en concreto, podríamos añadir al .gitignore _!script.sh_.
+  De esta manera exluiríamos nuestro script de la condición general; detectaríamos el cambio y podríamos mergearlo a master.
 
 ![image](./images/11.png)
 
