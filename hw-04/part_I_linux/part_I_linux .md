@@ -46,8 +46,8 @@ DIRECTORY=/backup/carolina/$YEAR/$MONTH/$DAY
 - Extraemos en variables para mayor legibilidad.
 - Comprobamos si existe el directorio del día-mes-año correspondiente. Si no existe lo creamos.
 - Si existe, copiamos _nginx\_requests\_total.txt_ en dicho directorio con el formato de nombre especificado en el enunciado.
-- Si el día de ejecución es un domingo, buscamos todos los archivos modificados los últimos 7 días y los comprimimos en un archivo .tar.gz sin la estructura de directorios-subdirectorios original (queremos visualizar solo los archivos .log).
-- Movemos el archivo creado al directorio.
+- Si el día de ejecución es un domingo, buscamos todos los archivos _.log_ modificados los últimos 7 días y los comprimimos en un archivo .tar.gz sin la estructura de directorios-subdirectorios original (queremos visualizar solo los archivos .log).
+- Movemos el archivo creado al directorio correspondiente.
 
 Probamos el script:
 - Tenemos el script en el directorio root
@@ -64,7 +64,7 @@ Probamos el script:
 
     ![image](./images/7.png)
 
-Para esta prueba rápida se han se han creado otras carpetas con archivos log y se ha eliminado la condición de que comprima cuando sea domingo.
+Nota: para esta prueba rápida se han se han creado otras carpetas con archivos log y se ha eliminado la condición de que comprima cuando sea domingo.
 
 ## Ejercicio 3
 
