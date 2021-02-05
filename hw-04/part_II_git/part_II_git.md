@@ -16,6 +16,7 @@ nano .gitignore
 # *.sh
 [save and exit]
 ~~~
+- otra opción sería ejecutar: _echo "*.sh" >> .gitignore_
 
 ![image](./images/2.png)
 
@@ -40,6 +41,7 @@ git add demo1.txt
 
 git commit -m “Modified demo1.txt”
 ~~~
+- otra opción para añadir contenido al fichero sería ejecutar: _echo "some text to see changes" >> demo1.txt_
 
 ![image](./images/6.png)
 
@@ -53,6 +55,7 @@ git add demo2.txt
 
 git commit -m “Modified demo3.txt”
 ~~~
+- otra opción para añadir contenido al fichero sería ejecutar: _echo "some text to see changes" >> demo2.txt_
 
 ![image](./images/7.png)
 
