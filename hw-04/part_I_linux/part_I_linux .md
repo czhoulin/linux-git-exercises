@@ -38,19 +38,47 @@ DIRECTORY=/backup/carolina/$YEAR/$MONTH/$DAY
 
 [ ! -d "$DIRECTORY" ] && sudo mkdir -p "$DIRECTORY"
 
-[ -d "$DIRECTORY" ] && sudo cp nginx_requests_total.txt "$DIRECTORY"/"$FILENAME".log
+[ -d "$DIRECTORY" ] && sudo cp /home/czhou/MPWAR/repos/linux-git-exercises/hw-04/part_I_linux/nginx_requests_total.txt "$DIRECTORY"/"$FILENAME".log
 
-[ "$WEEKDAY" -eq 7 ] && find /backup/carolina -type f -iname "*.log" -mtime -7 -print0 | sudo tar -czvf "$FILENAME".tar.gz -C backup/carolina/*/*/ --null -T - | sudo mv "$FILENAME".tar.gz "$DIRECTORY"
+find /backup/carolina -type f -iname "*.log" -mtime -7 -print0 | sudo tar --transform 's/.*\///g' -czvf "$FILENAME".tar.gz -T - | sudo mv "$FILENAME".tar.gz "$DIRECTORY"
 
 ~~~
 - Extraemos en variables para mayor legibilidad.
 - Comprobamos si existe el directorio del día-mes-año correspondiente. Si no existe lo creamos.
 - Si existe, copiamos _nginx\_requests\_total.txt_ en dicho directorio con el formato de nombre especificado en el enunciado.
-- Si el día de ejecución es un domingo, buscamos todos los archivos modificados los últimos 7 días y los comprimimos en un archivo .tar.gz. Movemos el archivo creado al directorio.
-TODO: crear el archivo comprimido sin la estructura de directorios --> plano.
+- Si el día de ejecución es un domingo, buscamos todos los archivos modificados los últimos 7 días y los comprimimos en un archivo .tar.gz sin la estructura de directorios-subdirectorios original (queremos visualizar solo los archivos .log).
+- Movemos el archivo creado al directorio.
+
+Probamos el script (se han creado otras carpetas con archivos log para probar):
+- Tenemos el script en el directorio root
+
+    ![image](./images/4.png)
+
+- Ejecutamos
+
+    ![image](./images/5.png)
+
+- Vemos el archivo comprimido en el directorio del día
+
+    ![image](./images/6.png)
+
+    ![image](./images/7.png)
+
 
 ## Ejercicio 3
 
-Si este script lo nombramos "exercise.sh" y está ubicado en /root con los permisos correspondientes para la ejecución:
+Si este script lo nombramos "exercise.sh" y está ubicado en /root con los permisos correspondientes para la ejecución (_sudo chmod +x exercise.sh_):
 
-59 23 * * 1-0 root /root/exercise.sh
+~~~
+crontab -e
+
+// add the task and save:
+59 23 * * 1-0 root /./exercise.sh
+~~~
+
+Se ejecutará la tarea:
+- minuto 59
+- hora 23
+- cada dia del mes
+- cada mes
+- de lunes a domingo
